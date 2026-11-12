@@ -2,7 +2,8 @@
 
 import { useEffect, useId, useState, type FormEvent, type KeyboardEvent } from "react";
 import { ScrambleText } from "@/components/ScrambleText";
-import { site } from "@/content/site";
+import { Icon } from "@/components/Icon";
+import { contactChannels, site } from "@/content/site";
 
 const TOPICS = [
   { id: "project", label: "A project", subject: "A project I'd like to build" },
@@ -91,18 +92,40 @@ export function ContactBlock() {
               "Copy email"
             )}
           </button>
-          <a
-            href={`https://github.com/${site.github}`}
-            target="_blank"
-            rel="noreferrer"
-            className="text-link inline-flex min-h-11 items-center gap-1 font-medium"
-          >
-            GitHub <span aria-hidden="true">↗</span>
-          </a>
           <span role="status" className="sr-only">
             {copied ? "Email address copied" : ""}
           </span>
         </div>
+
+        <p className="mt-10 text-[13px] text-muted">Other ways to reach me</p>
+        <ul className="mt-3 border-t border-line">
+          {contactChannels
+            .filter((c) => c.label !== "Email")
+            .map((c) => {
+              const external = c.href.startsWith("http");
+              return (
+                <li key={c.label} className="border-b border-line">
+                  <a
+                    href={c.href}
+                    {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+                    className="group grid min-h-14 grid-cols-[20px_minmax(0,1fr)_auto] items-center gap-x-4 py-2 text-[15px]"
+                  >
+                    <Icon name={c.icon} className="size-[18px] text-muted transition-colors group-hover:text-ink" />
+                    <span className="flex min-w-0 flex-wrap items-baseline gap-x-4">
+                      <span className="w-28 shrink-0 text-[13px] text-muted">{c.label}</span>
+                      <span className="truncate text-nav transition-colors group-hover:text-ink">{c.value}</span>
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="-translate-x-1 text-muted opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100 motion-reduce:transition-none"
+                    >
+                      {external ? "↗" : "→"}
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+        </ul>
       </div>
 
       {/* Composer */}

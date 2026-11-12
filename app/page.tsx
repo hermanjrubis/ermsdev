@@ -8,9 +8,13 @@ import { RoleTicker } from "@/components/RoleTicker";
 import { Section } from "@/components/Section";
 import { TechMarquee } from "@/components/TechMarquee";
 import { TypedHeading, typingDuration } from "@/components/TypedHeading";
-import { projects, site } from "@/content/site";
+import { Icon } from "@/components/Icon";
+import { contactChannels, projects, site } from "@/content/site";
 
 const headingLines = [site.greeting, site.person];
+const heroLinks = ["GitHub", "Instagram", "Email"]
+  .map((label) => contactChannels.find((c) => c.label === label))
+  .filter((c) => c !== undefined);
 const typed = typingDuration(headingLines);
 
 /** Stagger content in after the heading finishes typing. */
@@ -67,24 +71,22 @@ export default function HomePage() {
           className="enter mt-14 flex flex-wrap items-center gap-x-6 text-[13px] text-muted"
           style={after(360)}
         >
-          <li>
-            <a
-              href={`https://github.com/${site.github}`}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex min-h-11 items-center gap-1 transition-colors hover:text-ink"
-            >
-              github.com/{site.github} <span aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href={`mailto:${site.email}`}
-              className="inline-flex min-h-11 items-center transition-colors hover:text-ink"
-            >
-              {site.email}
-            </a>
-          </li>
+          {heroLinks.map((c) => {
+            const external = c.href.startsWith("http");
+            return (
+              <li key={c.label}>
+                <a
+                  href={c.href}
+                  {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+                  className="inline-flex min-h-11 items-center gap-2 transition-colors hover:text-ink"
+                >
+                  <Icon name={c.icon} className="size-4" />
+                  <span className="sr-only">{c.label}: </span>
+                  {c.value}
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </HeroStage>
 

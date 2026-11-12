@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BackToTop, ThemeSwitch } from "@/components/FooterControls";
+import { Icon } from "@/components/Icon";
 import { Logo } from "@/components/Logo";
 import { nav, site, socials } from "@/content/site";
 
@@ -51,6 +52,7 @@ export function Footer() {
                       {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
                       className={linkClass}
                     >
+                      <Icon name={s.icon} className="size-4 text-muted transition-colors group-hover:text-ink" />
                       {s.label}
                       <Arrow external={external} />
                     </a>

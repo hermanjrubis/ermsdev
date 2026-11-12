@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
-import type { NavItem } from "@/content/site";
+import { Icon } from "@/components/Icon";
+import { socials, type NavItem } from "@/content/site";
 
 type NavMenuProps = { items: NavItem[] };
 
@@ -55,6 +56,7 @@ export function NavMenu({ items }: NavMenuProps) {
         })}
       </ul>
 
+      {/* Two bars that cross into an X */}
       <button
         type="button"
         className="order-last inline-flex size-11 items-center justify-center text-nav hover:text-link-hover sm:hidden"
@@ -63,37 +65,85 @@ export function NavMenu({ items }: NavMenuProps) {
         aria-label={open ? "Close menu" : "Open menu"}
         onClick={() => setOpen((v) => !v)}
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          {open ? (
-            <path d="M5 5 19 19M19 5 5 19" stroke="currentColor" strokeWidth="2" />
-          ) : (
-            <path d="M3 8h18M3 16h18" stroke="currentColor" strokeWidth="2" />
-          )}
-        </svg>
+        <span aria-hidden="true" className="relative block h-3.5 w-5">
+          <span
+            className={`absolute top-0 left-0 h-[2px] w-5 bg-current transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+              open ? "translate-y-[6px] rotate-45" : ""
+            }`}
+          />
+          <span
+            className={`absolute bottom-0 left-0 h-[2px] bg-current transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+              open ? "w-5 -translate-y-[6px] -rotate-45" : "w-3.5"
+            }`}
+          />
+        </span>
       </button>
 
+      {/* Backdrop: fades in, tap to close */}
+      <button
+        type="button"
+        tabIndex={-1}
+        aria-hidden="true"
+        onClick={() => setOpen(false)}
+        className={`fixed inset-x-0 top-[72px] bottom-0 z-30 bg-paper/70 transition-opacity duration-300 motion-reduce:transition-none sm:hidden ${
+          open ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
+
+      {/* Panel: slides open, links drop in one after another */}
       <div
         id={panelId}
-        hidden={!open}
-        className="absolute inset-x-0 top-full z-40 border-b border-line bg-paper sm:hidden"
+        inert={!open}
+        className={`absolute inset-x-0 top-full z-40 grid border-b bg-paper transition-[grid-template-rows,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none sm:hidden ${
+          open ? "grid-rows-[1fr] border-line" : "grid-rows-[0fr] border-transparent"
+        }`}
       >
-        <ul className="container-site py-2">
-          {items.map((item) => {
-            const active = isActive(pathname, item.href);
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  aria-current={active ? "page" : undefined}
-                  onClick={() => setOpen(false)}
-                  className={`${linkBase} -mx-[14px] w-[calc(100%+28px)] ${active ? "text-ink" : "text-nav"}`}
+        <div className="overflow-hidden">
+          <ul className="container-site pt-2 pb-4">
+            {items.map((item, i) => {
+              const active = isActive(pathname, item.href);
+              return (
+                <li
+                  key={item.href}
+                  style={{ transitionDelay: open ? `${80 + i * 55}ms` : "0ms" }}
+                  className={`transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+                    open ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
+                  }`}
                 >
-                  {item.label}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+                  <Link
+                    href={item.href}
+                    aria-current={active ? "page" : undefined}
+                    onClick={() => setOpen(false)}
+                    className={`${linkBase} -mx-[14px] w-[calc(100%+28px)] text-[22px] tracking-[-0.02em] ${active ? "text-ink" : "text-nav"}`}
+                  >
+                    {active ? (
+                      <span aria-hidden="true" className="mr-2 inline-block h-[2px] w-3 bg-accent" />
+                    ) : null}
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+            <li
+              style={{ transitionDelay: open ? `${80 + items.length * 55}ms` : "0ms" }}
+              className={`mt-2 flex items-center gap-1 border-t border-line pt-3 transition-all duration-300 motion-reduce:transition-none ${
+                open ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
+              }`}
+            >
+              {socials.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  {...(s.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}
+                  aria-label={s.label}
+                  className="-ml-2 inline-flex size-11 items-center justify-center text-muted transition-colors hover:text-ink first:ml-[-10px]"
+                >
+                  <Icon name={s.icon} className="size-5" />
+                </a>
+              ))}
+            </li>
+          </ul>
+        </div>
       </div>
     </>
   );

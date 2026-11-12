@@ -2,9 +2,14 @@
  * All site copy lives here. Anything still in [BRACKETS] is a placeholder for you to fill in.
  */
 
+import type { IconName } from "@/components/Icon";
+
 export type NavItem = { label: string; href: string };
 
-export type SocialLink = { label: string; href: string };
+export type SocialLink = { label: string; href: string; icon: IconName };
+
+/** One way to reach you: shown in the contact section, the contact page and the footer. */
+export type ContactChannel = { label: string; value: string; href: string; icon: IconName };
 
 export type ProjectLink = { label: string; href: string };
 
@@ -47,7 +52,9 @@ export const site = {
   location: "Calamba, Laguna",
   timeZone: "Asia/Manila",
   email: "hermanrubisjd@gmail.com",
+  schoolEmail: "rubis.353948@calamba.sti.edu.ph",
   github: "hermanjrubis",
+  instagram: "hrmnrbs_",
   copyrightYear: 2026,
 } as const;
 
@@ -79,6 +86,7 @@ export const techStack = [
   { name: "Tailwind CSS", icon: "tailwindcss" },
   { name: "Three.js", icon: "threedotjs" },
   { name: "Firebase", icon: "firebase" },
+  { name: "Supabase", icon: "supabase" },
   { name: "Cloudinary", icon: "cloudinary" },
   { name: "MapLibre", icon: "maplibre" },
   { name: "OpenStreetMap", icon: "openstreetmap" },
@@ -100,10 +108,22 @@ export const nav: NavItem[] = [
 ];
 
 export const socials: SocialLink[] = [
-  { label: "GitHub", href: `https://github.com/${site.github}` },
-  { label: "Email", href: `mailto:${site.email}` },
-  // Add LinkedIn once you have the profile URL, e.g.
-  // { label: "LinkedIn", href: "https://www.linkedin.com/in/your-name" },
+  { label: "GitHub", href: `https://github.com/${site.github}`, icon: "github" },
+  { label: "Instagram", href: `https://www.instagram.com/${site.instagram}/`, icon: "instagram" },
+  { label: "Email", href: `mailto:${site.email}`, icon: "mail" },
+  // Add LinkedIn once you have the profile URL (add a "linkedin" icon in components/Icon.tsx too)
+];
+
+export const contactChannels: ContactChannel[] = [
+  { label: "Email", value: site.email, href: `mailto:${site.email}`, icon: "mail" },
+  { label: "School email", value: site.schoolEmail, href: `mailto:${site.schoolEmail}`, icon: "school" },
+  {
+    label: "Instagram",
+    value: `@${site.instagram}`,
+    href: `https://www.instagram.com/${site.instagram}/`,
+    icon: "instagram",
+  },
+  { label: "GitHub", value: `@${site.github}`, href: `https://github.com/${site.github}`, icon: "github" },
 ];
 
 export const projects: Project[] = [
