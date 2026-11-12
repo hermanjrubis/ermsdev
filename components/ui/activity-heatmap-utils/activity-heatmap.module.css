@@ -1,0 +1,388 @@
+/*
+ * Styles for components/ui/activity-heatmap.tsx, in the ermsDev palette.
+ * Levels are greys from the brand palette (no tints of the accent); the accent
+ * is kept for the selection ring and focus, like everywhere else on the site.
+ * Colours come from styles/tokens.css (--hm-0 … --hm-4, --ink, --muted, --line, --accent).
+ */
+
+.root {
+  /* Cells size themselves so the year fills the available width (10px to 26px) */
+  container-type: inline-size;
+  --gap: clamp(2px, 0.22vw, 4px);
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  color: var(--ink);
+}
+
+/* ---------- Summary line ---------- */
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.summary {
+  margin: 0;
+  font-size: clamp(1.0625rem, 1.15vw, 1.25rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.total {
+  font-weight: 600;
+}
+
+.period {
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Rolling digits and rising words ---------- */
+
+.rollingFrame {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.rolling {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+.place {
+  position: relative;
+  display: inline-block;
+}
+
+.placeChar {
+  display: inline-block;
+}
+
+.rise {
+  position: relative;
+  display: inline-block;
+}
+
+.riseLine {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* ---------- Grid ---------- */
+
+.scroller {
+  overflow-x: auto;
+  padding: 0.25rem 0 0.5rem;
+  scrollbar-width: thin;
+}
+
+.canvas {
+  --cell: max(10px, min(26px, calc((100cqw - 2.75rem - (var(--weeks) - 1) * var(--gap)) / var(--weeks))));
+  --step: calc(var(--cell) + var(--gap));
+  display: grid;
+  grid-template-columns: auto max-content;
+  grid-template-rows: auto auto;
+  column-gap: 0.75rem;
+  row-gap: 0.5rem;
+  width: max-content;
+}
+
+.months {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1;
+  height: 1.25em;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.month {
+  position: absolute;
+  left: calc(var(--col) * var(--step));
+  white-space: nowrap;
+}
+
+.weekdays {
+  display: grid;
+  grid-column: 1;
+  grid-row: 2;
+  grid-template-rows: repeat(7, var(--cell));
+  gap: var(--gap);
+  font-size: 0.6875rem;
+  line-height: var(--cell);
+  color: var(--muted);
+}
+
+.weekday {
+  white-space: nowrap;
+}
+
+.plot {
+  position: relative;
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.grid {
+  display: grid;
+  gap: var(--gap);
+  outline: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(var(--weeks), var(--cell));
+  gap: var(--gap);
+}
+
+.cell {
+  display: block;
+  width: var(--cell);
+  height: var(--cell);
+  background: var(--hm-0);
+  cursor: default;
+  /* A new range recolours the grid in a sweep, left to right (or back) */
+  transition:
+    background-color 320ms var(--ease-standard) var(--wave, 0ms),
+    opacity 160ms var(--ease-standard);
+}
+
+.grid[data-direction="back"] .cell {
+  transition-delay: var(--wave-back, 0ms), 0ms;
+}
+
+.cell[data-level="1"] {
+  background: var(--hm-1);
+}
+.cell[data-level="2"] {
+  background: var(--hm-2);
+}
+.cell[data-level="3"] {
+  background: var(--hm-3);
+}
+.cell[data-level="4"] {
+  background: var(--hm-4);
+}
+
+.cell[data-empty] {
+  background: transparent;
+}
+
+.cell:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+/* First time in view: cells wave in along the diagonal */
+.grid[data-reveal="hidden"] .cell {
+  opacity: 0;
+}
+
+.grid[data-reveal="revealing"] .cell {
+  animation: cell-in 520ms var(--ease-enter) both;
+  animation-delay: var(--wave, 0ms);
+}
+
+@keyframes cell-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+
+/* Legend preview: everything except the chosen level fades back */
+.grid[data-highlight] .cell:not([data-empty]) {
+  opacity: 0.15;
+}
+.grid[data-highlight="0"] .cell[data-level="0"],
+.grid[data-highlight="1"] .cell[data-level="1"],
+.grid[data-highlight="2"] .cell[data-level="2"],
+.grid[data-highlight="3"] .cell[data-level="3"],
+.grid[data-highlight="4"] .cell[data-level="4"] {
+  opacity: 1;
+}
+
+/* Selected day */
+.ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--cell);
+  height: var(--cell);
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(calc(var(--col) * var(--step)), calc(var(--row) * var(--step)));
+  transition:
+    transform 260ms var(--ease-standard),
+    opacity 160ms var(--ease-standard);
+}
+
+.ring[data-shown] {
+  opacity: 1;
+}
+
+/* ---------- Legend ---------- */
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin-top: 1rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.caption {
+  min-height: 1.4em;
+}
+
+.captionShort {
+  display: none;
+}
+
+.scale {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legendText {
+  white-space: nowrap;
+}
+
+.swatches {
+  display: flex;
+}
+
+/* 24px hit area around a 14px square */
+.swatch {
+  width: 24px;
+  height: 24px;
+  padding: 5px;
+  border: 0;
+  background-clip: content-box;
+  background-color: var(--hm-0);
+  cursor: pointer;
+}
+.swatch[data-level="1"] {
+  background-color: var(--hm-1);
+}
+.swatch[data-level="2"] {
+  background-color: var(--hm-2);
+}
+.swatch[data-level="3"] {
+  background-color: var(--hm-3);
+}
+.swatch[data-level="4"] {
+  background-color: var(--hm-4);
+}
+
+.swatch[aria-pressed="true"] {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+
+.swatch:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+
+/* ---------- Tooltip ---------- */
+
+.tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.bubble {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  padding: 0.45rem 0.7rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  white-space: nowrap;
+  transform-origin: 50% 100%;
+}
+
+.tipBody {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.tipMeasure,
+.tipLines {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+
+.tipMeasure {
+  position: absolute;
+  width: max-content;
+  visibility: hidden;
+}
+
+.tipPrimary {
+  font-weight: 600;
+}
+
+.tipSecondary {
+  opacity: 0.7;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 640px) {
+  .captionLong {
+    display: none;
+  }
+  .captionShort {
+    display: inline;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cell,
+  .ring {
+    transition: none;
+  }
+  .grid[data-reveal="revealing"] .cell {
+    animation: none;
+  }
+}

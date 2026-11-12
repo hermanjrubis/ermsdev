@@ -1,0 +1,176 @@
+/**
+ * All site copy lives here. Anything still in [BRACKETS] is a placeholder for you to fill in.
+ */
+
+export type NavItem = { label: string; href: string };
+
+export type SocialLink = { label: string; href: string };
+
+export type ProjectLink = { label: string; href: string };
+
+export type Project = {
+  slug: string;
+  title: string;
+  summary: string;
+  role: string;
+  year: string;
+  /** Short status shown as plain text, e.g. "In progress". Leave empty when shipped. */
+  status?: string;
+  stack: string[];
+  /** Screenshot of the project's front page, shown on hover. Path in /public. */
+  preview?: string;
+  /** Only add links that exist. Rows without links show none. */
+  links?: ProjectLink[];
+};
+
+export type Experience = {
+  role: string;
+  organization: string;
+  period: string;
+  summary: string;
+};
+
+export const site = {
+  name: "ermsDev",
+  person: "Herman John Rubis",
+  description:
+    "Herman John Rubis is a full-stack web developer and UI/UX designer from Calamba, Laguna.",
+  greeting: "Hi, I'm",
+  /** Cycles in the hero, typed out like a terminal. */
+  roles: [
+    "full-stack web developer",
+    "UI/UX designer",
+    "Android app developer",
+    "BSIT student at STI College Calamba",
+  ],
+  tagline: "I make the design and the code agree.",
+  location: "Calamba, Laguna",
+  timeZone: "Asia/Manila",
+  email: "hermanrubisjd@gmail.com",
+  github: "hermanjrubis",
+  copyrightYear: 2026,
+} as const;
+
+/**
+ * The draggable lanyard ID card in the hero (desktop only).
+ * photo: path to an image in /public. Leave empty for a placeholder box.
+ */
+export const idCard = {
+  name: "Herman John Rubis",
+  roles: ["Full-stack web developer", "UI/UX designer"],
+  photo: "/me.jpg",
+  /** Small line on the back of the card. */
+  backNote: "If found, please return to Herman.",
+};
+
+/**
+ * Logo loop under the hero. `icon` is a Simple Icons slug (simpleicons.org);
+ * see components/TechMarquee.tsx for the ones wired up.
+ */
+export const techStack = [
+  { name: "HTML", icon: "html5" },
+  { name: "CSS", icon: "css" },
+  { name: "JavaScript", icon: "javascript" },
+  { name: "TypeScript", icon: "typescript" },
+  { name: "React", icon: "react" },
+  { name: "Next.js", icon: "nextdotjs" },
+  { name: "Node.js", icon: "nodedotjs" },
+  { name: "Express", icon: "express" },
+  { name: "Tailwind CSS", icon: "tailwindcss" },
+  { name: "Three.js", icon: "threedotjs" },
+  { name: "Firebase", icon: "firebase" },
+  { name: "Cloudinary", icon: "cloudinary" },
+  { name: "MapLibre", icon: "maplibre" },
+  { name: "OpenStreetMap", icon: "openstreetmap" },
+  { name: "Java", icon: "openjdk" },
+  { name: "Android Studio", icon: "androidstudio" },
+  { name: "Figma", icon: "figma" },
+  { name: "Git", icon: "git" },
+  { name: "GitHub", icon: "github" },
+  { name: "Vercel", icon: "vercel" },
+  { name: "Claude", icon: "claude" },
+  { name: "Anthropic", icon: "anthropic" },
+  { name: "npm", icon: "npm" },
+] as const;
+
+export const nav: NavItem[] = [
+  { label: "Projects", href: "/projects" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
+
+export const socials: SocialLink[] = [
+  { label: "GitHub", href: `https://github.com/${site.github}` },
+  { label: "Email", href: `mailto:${site.email}` },
+  // Add LinkedIn once you have the profile URL, e.g.
+  // { label: "LinkedIn", href: "https://www.linkedin.com/in/your-name" },
+];
+
+export const projects: Project[] = [
+  {
+    slug: "calzada",
+    title: "Calzada",
+    summary:
+      "A commuting and local guide for Calamba, Laguna. Routes on an open map, 360° street photos you can walk through, an AI assistant, and a feed where local businesses post updates.",
+    role: "Design + full stack",
+    year: "2026",
+    status: "In progress",
+    stack: ["JavaScript", "Node.js", "Express", "Firebase", "MapLibre GL", "Groq", "Cloudinary"],
+    preview: "/projects/calzada.jpg",
+    links: [{ label: "Source", href: "https://github.com/hermanjrubis/calambiyahe" }],
+  },
+  {
+    slug: "certify",
+    title: "Certify",
+    summary:
+      "Bulk certificate generator. Upload a template, drag the name into place, paste a list, and download every certificate as one ZIP at full quality. Runs entirely in the browser.",
+    role: "Design + front end",
+    year: "2026",
+    stack: ["HTML", "CSS", "JavaScript"],
+    preview: "/projects/certify.jpg",
+    links: [{ label: "Source", href: "https://github.com/hermanjrubis/certify" }],
+  },
+  {
+    slug: "sti-bsit",
+    title: "STI Calamba BSIT site",
+    summary:
+      "Multi-page site for the BSIT program at STI College Calamba: program tracks, admissions, facilities, events and an AI chat helper.",
+    role: "Design + front end",
+    year: "2026",
+    stack: ["HTML", "CSS", "JavaScript"],
+    preview: "/projects/sti.jpg",
+    links: [{ label: "Source", href: "https://github.com/hermanjrubis/STI-College-Calamba" }],
+  },
+  {
+    slug: "reservo",
+    title: "Reservo",
+    summary:
+      "Android reservation app with a dashboard, a live queue display and a calendar picker. Built with my group for class.",
+    role: "Android developer, group project",
+    year: "2026",
+    status: "In progress",
+    stack: ["Java", "Android Studio"],
+  },
+];
+
+export const about = {
+  bio: [
+    "[BIO PARAGRAPH 1: who you are and what you focus on.]",
+    "[BIO PARAGRAPH 2: how you work, or what you are learning right now.]",
+  ],
+  toolbox: ["[LANGUAGE]", "[LANGUAGE]", "[FRAMEWORK]", "[TOOL]", "[TOOL]", "[TOOL]"],
+  experience: [
+    {
+      role: "[ROLE]",
+      organization: "[ORGANIZATION]",
+      period: "[START] – [END]",
+      summary: "[ONE LINE ON WHAT YOU DID THERE]",
+    },
+    {
+      role: "[ROLE]",
+      organization: "[ORGANIZATION]",
+      period: "[START] – [END]",
+      summary: "[ONE LINE ON WHAT YOU DID THERE]",
+    },
+  ] satisfies Experience[],
+};
