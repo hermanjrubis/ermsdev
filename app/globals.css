@@ -28,7 +28,8 @@
 }
 @media (min-width: 1024px) {
   :root {
-    --gutter: 2rem;
+    /* Grows with the window: 2rem on laptops up to 5rem on wide screens */
+    --gutter: clamp(2rem, 4vw, 5rem);
   }
 }
 
