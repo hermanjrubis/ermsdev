@@ -121,13 +121,49 @@
   }
 }
 
-/* Hero texture: a quiet dot grid in the line colour (same motif as the ID card) */
-.dot-grid {
+/*
+ * Hero texture: a fine, dense dot field that is strongest in the top-right
+ * corner and fades out across the hero. Near the cursor the dots brighten.
+ */
+.grid-field {
+  --mx: 50%;
+  --my: 40%;
+}
+/* Only the resting dots fade from the corner; the spotlight works anywhere */
+.grid-fade {
+  -webkit-mask-image: radial-gradient(ellipse 85% 95% at 100% 0%, #000 0%, rgb(0 0 0 / 0.55) 40%, transparent 78%);
+  mask-image: radial-gradient(ellipse 85% 95% at 100% 0%, #000 0%, rgb(0 0 0 / 0.55) 40%, transparent 78%);
+}
+.grid-base {
   background-color: var(--line);
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='2' cy='2' r='1.25'/%3E%3C/svg%3E")
-    0 0 / 24px 24px repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='2' cy='2' r='1.25'/%3E%3C/svg%3E")
-    0 0 / 24px 24px repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='1' cy='1' r='0.9'/%3E%3C/svg%3E") 0 0 / 14px 14px repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='1' cy='1' r='0.9'/%3E%3C/svg%3E") 0 0 / 14px 14px repeat;
+}
+.grid-spot {
+  opacity: 0;
+  transition: opacity 400ms ease;
+  -webkit-mask-image: radial-gradient(circle 220px at var(--mx) var(--my), #000, transparent 72%);
+  mask-image: radial-gradient(circle 220px at var(--mx) var(--my), #000, transparent 72%);
+}
+.grid-field[data-spot="on"] .grid-spot {
+  opacity: 1;
+}
+.grid-spot-dots {
+  background-color: var(--muted);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='1' cy='1' r='0.9'/%3E%3C/svg%3E") 0 0 / 14px 14px repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='1' cy='1' r='0.9'/%3E%3C/svg%3E") 0 0 / 14px 14px repeat;
+}
+@media (prefers-reduced-motion: reduce) {
+  .grid-spot {
+    transition: none;
+  }
+}
+
+/* Theme switch: the new theme spreads out from the button (see lib/themeTransition.ts) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
 
 /* Lanyard: grab cursor and no text selection while over / dragging the card */

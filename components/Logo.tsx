@@ -1,6 +1,6 @@
 type LogoProps = {
-  /** Font size in px. Every part of the logo is in em, so this one number scales it. */
-  size?: number;
+  /** Font size (px number, or any CSS length such as a clamp()). Everything is in em, so this one value scales it. */
+  size?: number | string;
   /** Blink the underscore like a console cursor. Hero and loading states only. */
   blink?: boolean;
   className?: string;

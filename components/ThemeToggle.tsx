@@ -1,8 +1,9 @@
 "use client";
 
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, type MouseEvent } from "react";
 
-import { THEME_STORAGE_KEY } from "@/lib/theme";
+import { THEME_EVENT, THEME_STORAGE_KEY } from "@/lib/theme";
+import { centerOf, withThemeTransition } from "@/lib/themeTransition";
 
 type Theme = "light" | "dark";
 
@@ -29,12 +30,16 @@ export function ThemeToggle() {
     } catch {}
   }, []);
 
-  function toggle() {
+  function toggle(e: MouseEvent<HTMLButtonElement>) {
     const next: Theme = resolvedTheme() === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", next);
-    try {
-      localStorage.setItem(THEME_STORAGE_KEY, next);
-    } catch {}
+    const { x, y } = centerOf(e.currentTarget);
+    withThemeTransition(() => {
+      document.documentElement.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem(THEME_STORAGE_KEY, next);
+      } catch {}
+      window.dispatchEvent(new Event(THEME_EVENT));
+    }, x, y);
   }
 
   return (
