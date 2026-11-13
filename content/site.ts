@@ -28,6 +28,21 @@ export type Project = {
   links?: ProjectLink[];
 };
 
+export type Certificate = {
+  slug: string;
+  title: string;
+  /** What kind of certificate it is, as printed on it */
+  kind: string;
+  issuer: string;
+  /** Short date line shown in lists, e.g. "Jun 2024" or "Jul – Dec 2025" */
+  date: string;
+  year: number;
+  /** Label/value pairs shown under the title, taken from the certificate itself */
+  details: { label: string; value: string }[];
+  image: { src: string; width: number; height: number };
+  pdf: string;
+};
+
 export type Experience = {
   role: string;
   organization: string;
@@ -103,6 +118,7 @@ export const techStack = [
 
 export const nav: NavItem[] = [
   { label: "Projects", href: "/projects" },
+  { label: "Certificates", href: "/certificates" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
@@ -170,6 +186,38 @@ export const projects: Project[] = [
     year: "2026",
     status: "In progress",
     stack: ["Java", "Android Studio"],
+  },
+];
+
+/** Newest first. Images live in public/certificates/ next to the original PDFs. */
+export const certificates: Certificate[] = [
+  {
+    slug: "sap-s4hana-global-bike",
+    title: "Intro to SAP S/4HANA using Global Bike – Part II",
+    kind: "Certificate of Participation",
+    issuer: "SAP University Alliances",
+    date: "Jul – Dec 2025",
+    year: 2025,
+    details: [
+      { label: "Period", value: "July 28 – December 12, 2025" },
+      { label: "Conducted by", value: "STI College, Philippines" },
+    ],
+    image: { src: "/certificates/sap-s4hana-global-bike.jpg", width: 1240, height: 1754 },
+    pdf: "/certificates/sap-s4hana-global-bike.pdf",
+  },
+  {
+    slug: "oracle-java-fundamentals",
+    title: "Java Fundamentals",
+    kind: "Award of Course Completion",
+    issuer: "Oracle Academy",
+    date: "Jun 2024",
+    year: 2024,
+    details: [
+      { label: "Issued", value: "June 19, 2024" },
+      { label: "Instructor", value: "Beronika Peña" },
+    ],
+    image: { src: "/certificates/oracle-java-fundamentals.jpg", width: 1800, height: 1391 },
+    pdf: "/certificates/oracle-java-fundamentals.pdf",
   },
 ];
 
