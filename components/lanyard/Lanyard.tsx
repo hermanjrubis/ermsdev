@@ -280,7 +280,9 @@ function Rig({ textures, theme, still, stageRef, ratioRef, initialRatio }: RigPr
         lerped.current.set(r, l);
       }
       const dist = Math.max(0.1, Math.min(1, l.distanceTo(t as THREE.Vector3)));
-      l.lerp(t as THREE.Vector3, d * (10 + dist * 40));
+      // Frame-rate independent easing: always between 0 and 1, so slow frames
+      // (30fps phones, busy laptops) can't overshoot and fling the strap away
+      l.lerp(t as THREE.Vector3, 1 - Math.exp(-d * (10 + dist * 40)));
     }
 
     const c = curve.current;

@@ -91,15 +91,19 @@ function text(
   ctx.restore();
 }
 
-/** Textures are drawn in card units and rasterised at 1.5x so the card stays crisp on HiDPI screens. */
+/**
+ * Textures are drawn in card units and rasterised larger so the card stays crisp
+ * on HiDPI screens. The strap repeats along its length, so its texture must stay
+ * a power of two: it gets exactly 2x (2048 x 256).
+ */
 const TEX_SCALE = 1.5;
 
-function newCanvas(w: number, h: number) {
+function newCanvas(w: number, h: number, scale = TEX_SCALE) {
   const c = document.createElement("canvas");
-  c.width = Math.round(w * TEX_SCALE);
-  c.height = Math.round(h * TEX_SCALE);
+  c.width = Math.round(w * scale);
+  c.height = Math.round(h * scale);
   const ctx = c.getContext("2d")!;
-  ctx.scale(TEX_SCALE, TEX_SCALE);
+  ctx.scale(scale, scale);
   ctx.imageSmoothingQuality = "high";
   return { c, ctx };
 }
@@ -361,7 +365,7 @@ export function makeBandTexture(theme: CardTheme, family: string) {
   const w = 1024;
   const h = 128;
   const p = cardPalette(theme);
-  const { c, ctx } = newCanvas(w, h);
+  const { c, ctx } = newCanvas(w, h, 2);
   ctx.fillStyle = p.card;
   ctx.fillRect(0, 0, w, h);
   drawLogo(ctx, family, 60, 86, 64, p.ink);
