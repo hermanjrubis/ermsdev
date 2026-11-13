@@ -10,6 +10,7 @@ import { TechMarquee } from "@/components/TechMarquee";
 import { TypedHeading, typingDuration } from "@/components/TypedHeading";
 import { Icon } from "@/components/Icon";
 import { contactChannels, projects, site } from "@/content/site";
+import { PageTransition } from "@/components/PageTransition";
 
 const headingLines = [site.greeting, site.person];
 const heroLinks = ["GitHub", "Instagram", "Email"]
@@ -22,7 +23,7 @@ const after = (ms: number) => ({ "--delay": `${typed + ms}ms` }) as CSSPropertie
 
 export default function HomePage() {
   return (
-    <>
+    <PageTransition>
       <HeroStage>
         <TypedHeading
           id="hero-heading"
@@ -133,6 +134,6 @@ export default function HomePage() {
       >
         <ContactBlock />
       </Section>
-    </>
+    </PageTransition>
   );
 }

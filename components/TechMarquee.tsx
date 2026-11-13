@@ -1,65 +1,12 @@
-import {
-  siAndroidstudio,
-  siAnthropic,
-  siClaude,
-  siCloudinary,
-  siCss,
-  siExpress,
-  siFigma,
-  siFirebase,
-  siGit,
-  siGithub,
-  siHtml5,
-  siJavascript,
-  siMaplibre,
-  siNextdotjs,
-  siNodedotjs,
-  siNpm,
-  siOpenjdk,
-  siOpenstreetmap,
-  siReact,
-  siTailwindcss,
-  siThreedotjs,
-  siSupabase,
-  siTypescript,
-  siVercel,
-  type SimpleIcon,
-} from "simple-icons";
+import { TECH_ICONS } from "@/lib/techIcons";
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { techStack } from "@/content/site";
 
-// Simple Icons (CC0). To add a tool: import its icon here and add it to `techStack` in content/site.ts.
-const ICONS: Record<string, SimpleIcon> = {
-  html5: siHtml5,
-  css: siCss,
-  javascript: siJavascript,
-  typescript: siTypescript,
-  react: siReact,
-  nextdotjs: siNextdotjs,
-  nodedotjs: siNodedotjs,
-  express: siExpress,
-  tailwindcss: siTailwindcss,
-  threedotjs: siThreedotjs,
-  firebase: siFirebase,
-  supabase: siSupabase,
-  cloudinary: siCloudinary,
-  maplibre: siMaplibre,
-  openstreetmap: siOpenstreetmap,
-  openjdk: siOpenjdk,
-  androidstudio: siAndroidstudio,
-  figma: siFigma,
-  git: siGit,
-  github: siGithub,
-  vercel: siVercel,
-  claude: siClaude,
-  anthropic: siAnthropic,
-  npm: siNpm,
-};
 
 type Tool = (typeof techStack)[number];
 
 function ToolMark({ tool }: { tool: Tool }) {
-  const icon = ICONS[tool.icon];
+  const icon = TECH_ICONS[tool.icon];
   return (
     <span className="group flex items-center gap-3.5 text-muted transition-colors duration-200 hover:text-ink">
       {icon ? (

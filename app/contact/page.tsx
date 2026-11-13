@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { Icon } from "@/components/Icon";
 import { PageHeader } from "@/components/PageHeader";
 import { contactChannels, site } from "@/content/site";
+import { PageTransition } from "@/components/PageTransition";
 
 export const metadata: Metadata = { title: "Contact" };
 
 export default function ContactPage() {
   return (
-    <>
+    <PageTransition>
       <PageHeader
         title="Contact"
         intro="Email is the fastest way to reach me. For anything school-related, use my STI email."
@@ -41,6 +42,6 @@ export default function ContactPage() {
           </div>
         </dl>
       </div>
-    </>
+    </PageTransition>
   );
 }

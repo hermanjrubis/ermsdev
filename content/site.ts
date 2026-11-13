@@ -43,13 +43,6 @@ export type Certificate = {
   pdf: string;
 };
 
-export type Experience = {
-  role: string;
-  organization: string;
-  period: string;
-  summary: string;
-};
-
 export const site = {
   name: "ermsDev",
   person: "Herman John Rubis",
@@ -202,7 +195,7 @@ export const certificates: Certificate[] = [
       { label: "Period", value: "July 28 – December 12, 2025" },
       { label: "Conducted by", value: "STI College, Philippines" },
     ],
-    image: { src: "/certificates/sap-s4hana-global-bike.jpg", width: 1240, height: 1754 },
+    image: { src: "/certificates/sap-s4hana-global-bike.jpg", width: 1980, height: 2801 },
     pdf: "/certificates/sap-s4hana-global-bike.pdf",
   },
   {
@@ -216,29 +209,54 @@ export const certificates: Certificate[] = [
       { label: "Issued", value: "June 19, 2024" },
       { label: "Instructor", value: "Beronika Peña" },
     ],
-    image: { src: "/certificates/oracle-java-fundamentals.jpg", width: 1800, height: 1391 },
+    image: { src: "/certificates/oracle-java-fundamentals.jpg", width: 2800, height: 2164 },
     pdf: "/certificates/oracle-java-fundamentals.pdf",
   },
 ];
 
+export type AboutFocus = { title: string; text: string; projects: string[] };
+export type ToolGroup = { label: string; tools: string[] };
+
+/**
+ * About page. Written from what's already on the site; edit freely.
+ * Tool names in `toolbox` must match names in `techStack` so their logos show.
+ */
 export const about = {
+  /** Large opening line. It fills in word by word as you scroll. */
+  statement:
+    "I'm Herman John Rubis, Drei to most people. I study IT at STI College Calamba, and I design and build for the web, usually both on the same project.",
   bio: [
-    "[BIO PARAGRAPH 1: who you are and what you focus on.]",
-    "[BIO PARAGRAPH 2: how you work, or what you are learning right now.]",
+    "Most of what I build starts with a problem close to home: a commuting guide for Calamba, a tool that makes a whole batch of certificates in one go, and a reservation app my group is building for Android.",
+    "The part I enjoy most is where design meets code. I sketch the screens first, then sweat the spacing, motion and small states in the browser until it feels finished, not just working.",
   ],
-  toolbox: ["[LANGUAGE]", "[LANGUAGE]", "[FRAMEWORK]", "[TOOL]", "[TOOL]", "[TOOL]"],
-  experience: [
+  focus: [
     {
-      role: "[ROLE]",
-      organization: "[ORGANIZATION]",
-      period: "[START] – [END]",
-      summary: "[ONE LINE ON WHAT YOU DID THERE]",
+      title: "Web development",
+      text: "Full-stack web apps: JavaScript and TypeScript up front with React and Next.js, and Node.js, Express, Firebase or Supabase behind them.",
+      projects: ["calzada", "certify", "sti-bsit"],
     },
     {
-      role: "[ROLE]",
-      organization: "[ORGANIZATION]",
-      period: "[START] – [END]",
-      summary: "[ONE LINE ON WHAT YOU DID THERE]",
+      title: "UI/UX design",
+      text: "Wireframes and mockups before code, then a small design system the build can follow: type, spacing, colour and every state in between.",
+      projects: ["calzada", "sti-bsit"],
     },
-  ] satisfies Experience[],
+    {
+      title: "Android",
+      text: "Native Android apps in Java with Android Studio, built with my groupmates.",
+      projects: ["reservo"],
+    },
+  ] satisfies AboutFocus[],
+  education: {
+    degree: "BS Information Technology",
+    school: "STI College Calamba",
+    status: "In progress",
+  },
+  toolbox: [
+    { label: "Languages", tools: ["HTML", "CSS", "JavaScript", "TypeScript", "Java"] },
+    { label: "Front end", tools: ["React", "Next.js", "Tailwind CSS", "Three.js"] },
+    { label: "Back end & data", tools: ["Node.js", "Express", "Firebase", "Supabase", "Cloudinary"] },
+    { label: "Maps", tools: ["MapLibre", "OpenStreetMap"] },
+    { label: "Design & mobile", tools: ["Figma", "Android Studio"] },
+    { label: "Workflow", tools: ["Git", "GitHub", "Vercel", "npm", "Claude"] },
+  ] satisfies ToolGroup[],
 };

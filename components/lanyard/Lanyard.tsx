@@ -387,7 +387,7 @@ export default function Lanyard({ active, stageRef, ratioRef, initialRatio }: La
   return (
     <Canvas
       camera={{ position: [0, 0, CAMERA_Z], fov: FOV }}
-      dpr={[1, 1.75]}
+      dpr={[1, 2]}
       flat
       gl={{ alpha: true, antialias: true }}
       frameloop={active ? "always" : "never"}

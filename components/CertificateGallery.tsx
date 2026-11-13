@@ -160,6 +160,7 @@ function TiltPreview({ cert, onOpen }: { cert: Certificate; onOpen: () => void }
           src={cert.image.src}
           alt=""
           fill
+          quality={90}
           sizes="(min-width: 768px) 40vw, 90vw"
           className="object-contain"
         />
@@ -322,7 +323,8 @@ function Viewer({
                 alt={`${cert.kind}: ${cert.title}, issued by ${cert.issuer}`}
                 fill
                 priority
-                sizes="100vw"
+                quality={90}
+                sizes={zoomed ? "220vw" : "100vw"}
                 className="object-contain"
                 draggable={false}
               />

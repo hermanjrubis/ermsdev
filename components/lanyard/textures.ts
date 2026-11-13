@@ -91,11 +91,17 @@ function text(
   ctx.restore();
 }
 
+/** Textures are drawn in card units and rasterised at 1.5x so the card stays crisp on HiDPI screens. */
+const TEX_SCALE = 1.5;
+
 function newCanvas(w: number, h: number) {
   const c = document.createElement("canvas");
-  c.width = w;
-  c.height = h;
-  return c;
+  c.width = Math.round(w * TEX_SCALE);
+  c.height = Math.round(h * TEX_SCALE);
+  const ctx = c.getContext("2d")!;
+  ctx.scale(TEX_SCALE, TEX_SCALE);
+  ctx.imageSmoothingQuality = "high";
+  return { c, ctx };
 }
 
 function toTexture(canvas: HTMLCanvasElement) {
@@ -246,8 +252,7 @@ function shadesFor(theme: CardTheme) {
 export async function makeCardFront(theme: CardTheme, family: string, content: CardContent) {
   const { w, h } = CARD_PX;
   const p = cardPalette(theme);
-  const c = newCanvas(w, h);
-  const ctx = c.getContext("2d")!;
+  const { c, ctx } = newCanvas(w, h);
   const pad = 88;
   const inner = w - pad * 2;
 
@@ -327,8 +332,7 @@ export async function makeCardFront(theme: CardTheme, family: string, content: C
 export function makeCardBack(theme: CardTheme, family: string, content?: CardContent) {
   const { w, h } = CARD_PX;
   const p = cardPalette(theme);
-  const c = newCanvas(w, h);
-  const ctx = c.getContext("2d")!;
+  const { c, ctx } = newCanvas(w, h);
   const pad = 88;
   ctx.fillStyle = p.card;
   ctx.fillRect(0, 0, w, h);
@@ -357,8 +361,7 @@ export function makeBandTexture(theme: CardTheme, family: string) {
   const w = 1024;
   const h = 128;
   const p = cardPalette(theme);
-  const c = newCanvas(w, h);
-  const ctx = c.getContext("2d")!;
+  const { c, ctx } = newCanvas(w, h);
   ctx.fillStyle = p.card;
   ctx.fillRect(0, 0, w, h);
   drawLogo(ctx, family, 60, 86, 64, p.ink);

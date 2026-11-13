@@ -68,6 +68,7 @@ export function ProjectList({ projects, headingLevel = "h3" }: ProjectListProps)
                     alt={`${project.title} front page`}
                     width={1200}
                     height={750}
+                    quality={90}
                     sizes="(min-width: 768px) 1px, 100vw"
                     className="mb-4 w-full border border-line md:hidden"
                   />
@@ -116,6 +117,7 @@ export function ProjectList({ projects, headingLevel = "h3" }: ProjectListProps)
               src={p.preview!}
               alt=""
               fill
+              quality={90}
               sizes={`${PREVIEW_W}px`}
               className="object-cover object-top transition-opacity duration-200"
               style={{ opacity: shown?.slug === p.slug ? 1 : 0 }}
